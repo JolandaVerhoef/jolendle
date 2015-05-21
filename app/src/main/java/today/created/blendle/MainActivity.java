@@ -3,9 +3,11 @@ package today.created.blendle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -37,7 +40,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        new TestTask().execute();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -47,6 +50,19 @@ public class MainActivity extends Activity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+    }
+    class TestTask extends AsyncTask<Void, Void, Void> {
+
+        private Exception exception;
+
+        protected Void doInBackground(Void... voids) {
+            try {
+                new Webservice().getMostPopularItem();
+            } catch (IOException e) {
+                Log.e("MainActivity", e.getMessage());
+            }
+            return null;
+        }
     }
 
 
