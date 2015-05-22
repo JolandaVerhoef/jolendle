@@ -10,10 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.IOException;
+import java.util.List;
 
 import today.created.blendle.R;
 import today.created.blendle.Webservice;
 import today.created.blendle.adapter.ItemPagerAdapter;
+import today.created.blendle.hal.HalItemPopular;
 
 
 public class MainActivity extends Activity {
@@ -51,7 +53,9 @@ public class MainActivity extends Activity {
     class TestTask extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... voids) {
             try {
-                new Webservice().getMostPopularItem();
+                List<HalItemPopular> popularItems = new Webservice().getPopularItems().items();
+                mItemPagerAdapter.setItems(popularItems);
+                mItemPagerAdapter.notifyDataSetChanged();
             } catch (IOException e) {
                 Log.e("MainActivity", e.getMessage());
             }
