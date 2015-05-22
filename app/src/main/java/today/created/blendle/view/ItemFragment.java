@@ -8,31 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import today.created.blendle.R;
+import today.created.blendle.hal.HalItemPopular;
 
 /**
  * Created by jolandaverhoef on 22/05/15.
  * This fragment shows the content of a Blendle item.
  */
 public class ItemFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private HalItemPopular item;
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static ItemFragment newInstance(int sectionNumber) {
+    public static ItemFragment newInstance(HalItemPopular item) {
         ItemFragment fragment = new ItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
+        fragment.setItem(item);
         return fragment;
-    }
-
-    public ItemFragment() {
     }
 
     @Override
@@ -44,13 +32,10 @@ public class ItemFragment extends Fragment {
     @Override
     public void onViewCreated(View rootView,  Bundle savedInstanceState) {
         TextView sectionLabel = (TextView) rootView.findViewById(R.id.section_label);
-        int sectionTextResource;
-        switch((int)this.getArguments().get(ARG_SECTION_NUMBER)) {
-            case 1: sectionTextResource = R.string.title_section1; break;
-            case 2: sectionTextResource = R.string.title_section2; break;
-            case 3: sectionTextResource = R.string.title_section3; break;
-            default: sectionTextResource = R.string.hello_world;
-        }
-        sectionLabel.setText(sectionTextResource);
+        if(item != null) sectionLabel.setText(item.getManifest().body().get(0).content);
+    }
+
+    public void setItem(HalItemPopular item) {
+        this.item = item;
     }
 }

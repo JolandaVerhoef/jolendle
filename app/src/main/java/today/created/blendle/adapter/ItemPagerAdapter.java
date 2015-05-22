@@ -22,12 +22,12 @@ public class ItemPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ItemFragment.newInstance(position + 1);
+        return ItemFragment.newInstance(items.get(position));
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return items == null ? 0 : items.size();
     }
 
     public void setItems(List<HalItemPopular> items) {

@@ -43,23 +43,27 @@ public class MainActivity extends Activity {
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mItemPagerAdapter = new ItemPagerAdapter(getFragmentManager(), this);
+        mItemPagerAdapter = new ItemPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mItemPagerAdapter);
 
     }
-    class TestTask extends AsyncTask<Void, Void, Void> {
-        protected Void doInBackground(Void... voids) {
+    class TestTask extends AsyncTask<Void, Void, Boolean> {
+        protected Boolean doInBackground(Void... voids) {
             try {
                 List<HalItemPopular> popularItems = new Webservice().getPopularItems().items();
                 mItemPagerAdapter.setItems(popularItems);
-                mItemPagerAdapter.notifyDataSetChanged();
+                return true;
             } catch (IOException e) {
                 Log.e("MainActivity", e.getMessage());
             }
-            return null;
+            return false;
+        }
+
+        protected void onPostExecute(Boolean succeeded) {
+            if(succeeded) mItemPagerAdapter.notifyDataSetChanged();
         }
     }
 
