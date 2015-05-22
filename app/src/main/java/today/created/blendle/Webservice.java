@@ -1,15 +1,12 @@
 package today.created.blendle;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
-import today.created.blendle.hal.HalContent;
+import today.created.blendle.hal.HalItemPopular;
 import today.created.blendle.hal.HalItemsPopular;
 import today.created.blendle.hal.HalRoot;
 
@@ -31,13 +28,13 @@ public class Webservice {
         return mapper.readValue(new URL("https://static.blendle.nl/api.json"), HalRoot.class);
     }
 
-    public void getMostPopularItem() throws IOException {
+    public HalItemsPopular getPopularItems() throws IOException {
         String itemsPopularLink = getHalRoot().getItemsPopularLink();
-        HalItemsPopular halItemsPopular = mapper.readValue(new URL(itemsPopularLink), HalItemsPopular.class);
-        final List<HalContent> body = halItemsPopular.items().get(0).getManifest().body();
-        for(HalContent bodyPart : body) {
-            Log.d("Webservice", bodyPart.content);
-        }
+        return mapper.readValue(new URL(itemsPopularLink), HalItemsPopular.class);
+    }
+
+    public HalItemPopular getMostPopularItem() throws IOException {
+        return getPopularItems().items().get(0);
     }
 
 }
