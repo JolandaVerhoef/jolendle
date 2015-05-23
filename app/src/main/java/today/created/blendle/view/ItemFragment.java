@@ -2,12 +2,14 @@ package today.created.blendle.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import today.created.blendle.R;
+import today.created.blendle.hal.HalContent;
 import today.created.blendle.hal.HalItemPopular;
 
 /**
@@ -27,24 +29,19 @@ public class ItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View rootView,  Bundle savedInstanceState) {
-        sectionLabel = (TextView) rootView.findViewById(R.id.section_label);
-        updateUI();
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup tvContainer = (ViewGroup) v.findViewById(R.id.container);
+        if(item != null) {
+            for (HalContent bodyPart : item.getManifest().body()) {
+                TextView textView = new TextView(container.getContext());
+                textView.setText(Html.fromHtml(bodyPart.content));
+                tvContainer.addView(textView);
+            }
+        }
+        return v;
     }
 
     private void setItem(HalItemPopular item) {
         this.item = item;
-    }
-
-    private void updateUI() {
-        if(item != null) {
-            sectionLabel.setText(item.getManifest().body().get(0).content);
-        } else {
-            sectionLabel.setText(R.string.hello_world);
-        }
     }
 }
