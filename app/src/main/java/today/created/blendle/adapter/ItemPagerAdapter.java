@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import today.created.blendle.hal.HalItemPopular;
-import today.created.blendle.view.ItemFragment;
-import today.created.blendle.view.ProgressFragment;
+import today.created.blendle.view.fragment.ItemFragment;
+import today.created.blendle.view.fragment.ProgressFragment;
 
 /**
  * Created by jolandaverhoef on 22/05/15.

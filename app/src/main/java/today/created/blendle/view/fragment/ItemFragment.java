@@ -1,4 +1,4 @@
-package today.created.blendle.view;
+package today.created.blendle.view.fragment;
 
 import android.app.Fragment;
 import android.graphics.Typeface;

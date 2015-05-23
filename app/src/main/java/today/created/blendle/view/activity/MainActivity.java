@@ -1,4 +1,4 @@
-package today.created.blendle.view;
+package today.created.blendle.view.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
