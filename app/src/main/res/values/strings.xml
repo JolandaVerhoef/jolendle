@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Blendle</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Jolendle</string>
     <string name="action_settings">Settings</string>
+    <string name="night_mode">Night mode</string>
+    <string name="dim_display">Very dim display (for dark rooms)</string>
+    <string name="preferences">Preferences</string>
 </resources>

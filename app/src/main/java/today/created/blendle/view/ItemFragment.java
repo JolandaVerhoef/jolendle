@@ -18,7 +18,6 @@ import today.created.blendle.hal.HalItemPopular;
  */
 public class ItemFragment extends Fragment {
     private HalItemPopular item;
-    private TextView sectionLabel;
 
     public static ItemFragment newInstance(HalItemPopular item) {
         ItemFragment fragment = new ItemFragment();
