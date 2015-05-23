@@ -13,6 +13,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class HalManifest {
     @JsonProperty("body")
+    private
     List<HalContent> body;
 
     public List<HalContent> body() {

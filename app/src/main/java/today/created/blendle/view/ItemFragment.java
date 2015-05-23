@@ -16,6 +16,7 @@ import today.created.blendle.hal.HalItemPopular;
  */
 public class ItemFragment extends Fragment {
     private HalItemPopular item;
+    private TextView sectionLabel;
 
     public static ItemFragment newInstance(HalItemPopular item) {
         ItemFragment fragment = new ItemFragment();
@@ -31,11 +32,19 @@ public class ItemFragment extends Fragment {
 
     @Override
     public void onViewCreated(View rootView,  Bundle savedInstanceState) {
-        TextView sectionLabel = (TextView) rootView.findViewById(R.id.section_label);
-        if(item != null) sectionLabel.setText(item.getManifest().body().get(0).content);
+        sectionLabel = (TextView) rootView.findViewById(R.id.section_label);
+        updateUI();
     }
 
-    public void setItem(HalItemPopular item) {
+    private void setItem(HalItemPopular item) {
         this.item = item;
+    }
+
+    private void updateUI() {
+        if(item != null) {
+            sectionLabel.setText(item.getManifest().body().get(0).content);
+        } else {
+            sectionLabel.setText(R.string.hello_world);
+        }
     }
 }

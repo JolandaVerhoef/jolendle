@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class HalRoot {
     @JsonProperty("_links")
-    protected RootLinks links;
+    private RootLinks links;
 
     public String getSelfLink() {
         return links.self.href;

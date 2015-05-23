@@ -10,15 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.IOException;
-import java.util.List;
 
 import today.created.blendle.R;
 import today.created.blendle.Webservice;
 import today.created.blendle.adapter.ItemPagerAdapter;
-import today.created.blendle.hal.HalItemPopular;
+import today.created.blendle.hal.HalItemsPopular;
+import today.created.blendle.hal.Link;
 
 
 public class MainActivity extends Activity {
+    private Link nextPage;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -28,42 +29,68 @@ public class MainActivity extends Activity {
      * may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
-    ItemPagerAdapter mItemPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
+    private ItemPagerAdapter mItemPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new TestTask().execute();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mItemPagerAdapter = new ItemPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        /*
+      The {@link ViewPager} that will host the section contents.
+     */
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == mItemPagerAdapter.getCount() - 1 && mItemPagerAdapter.isNotLoadingData()) {
+                    mItemPagerAdapter.setLoadingData(true);
+                    new TestTask().execute();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         mViewPager.setAdapter(mItemPagerAdapter);
 
+        new TestTask().execute();
     }
-    class TestTask extends AsyncTask<Void, Void, Boolean> {
-        protected Boolean doInBackground(Void... voids) {
+
+    private class TestTask extends AsyncTask<Void, Void, HalItemsPopular> {
+        protected void onPreExecute() {
+            mItemPagerAdapter.setLoadingData(true);
+        }
+        protected HalItemsPopular doInBackground(Void... voids) {
             try {
-                List<HalItemPopular> popularItems = new Webservice().getPopularItems().items();
-                mItemPagerAdapter.setItems(popularItems);
-                return true;
+                final Webservice webservice = new Webservice();
+                if(nextPage == null) {
+                    return webservice.getPopularItems();
+                } else {
+                    return webservice.getNextPopularItems(nextPage);
+                }
             } catch (IOException e) {
                 Log.e("MainActivity", e.getMessage());
             }
-            return false;
+            return null;
         }
 
-        protected void onPostExecute(Boolean succeeded) {
-            if(succeeded) mItemPagerAdapter.notifyDataSetChanged();
+        protected void onPostExecute(HalItemsPopular popularItems) {
+            if(popularItems != null) {
+                mItemPagerAdapter.addItems(popularItems.items());
+                nextPage = popularItems.links.next;
+            }
+            mItemPagerAdapter.setLoadingData(false);
         }
     }
 

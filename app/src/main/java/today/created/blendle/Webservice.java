@@ -9,6 +9,7 @@ import java.net.URL;
 import today.created.blendle.hal.HalItemPopular;
 import today.created.blendle.hal.HalItemsPopular;
 import today.created.blendle.hal.HalRoot;
+import today.created.blendle.hal.Link;
 
 /**
  * Created by jolandaverhoef on 21/05/15.
@@ -24,7 +25,7 @@ public class Webservice {
         mapper = new ObjectMapper(jsonFactory);
     }
 
-    public HalRoot getHalRoot() throws IOException {
+    private HalRoot getHalRoot() throws IOException {
         return mapper.readValue(new URL("https://static.blendle.nl/api.json"), HalRoot.class);
     }
 
@@ -33,8 +34,11 @@ public class Webservice {
         return mapper.readValue(new URL(itemsPopularLink), HalItemsPopular.class);
     }
 
+    public HalItemsPopular getNextPopularItems(Link next) throws IOException {
+        return mapper.readValue(new URL(next.href), HalItemsPopular.class);
+    }
+
     public HalItemPopular getMostPopularItem() throws IOException {
         return getPopularItems().items().get(0);
     }
-
 }

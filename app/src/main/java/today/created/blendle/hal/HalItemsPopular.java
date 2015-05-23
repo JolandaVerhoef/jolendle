@@ -13,10 +13,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class HalItemsPopular {
     @JsonProperty("_embedded")
-    protected Embedded embedded;
+    private Embedded embedded;
 
     @JsonProperty("_links")
-    protected Links links;
+    public Links links;
 
     public List<HalItemPopular> items() {
         return embedded.items;
@@ -31,6 +31,8 @@ public class HalItemsPopular {
     @JsonIgnoreProperties(ignoreUnknown=true)
     public class Links {
         @JsonProperty("self")
-        Link self;
+        public Link self;
+        @JsonProperty("next")
+        public Link next;
     }
 }

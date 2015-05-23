@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class HalItemPopular {
     @JsonProperty("_embedded")
-    protected Embedded embedded;
+    private Embedded embedded;
 
     @JsonProperty("_links")
-    protected Links links;
+    private Links links;
 
     public HalManifest getManifest() {
         return embedded.manifest;
