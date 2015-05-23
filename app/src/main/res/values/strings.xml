@@ -5,4 +5,8 @@
     <string name="dim_display">Very dim display (for dark rooms)</string>
     <string name="preferences">Preferences</string>
     <string name="dummy">dummy</string>
+    <string name="dialog_daydream_message">With Jolendle\'s daydream you will never miss the news! It shows the most popular news item while your device is charging.</string>
+    <string name="dialog_daydream_enable">Enable</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_daydream_title">Enable daydream?</string>
 </resources>
