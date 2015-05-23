@@ -1,17 +1,15 @@
 package today.created.blendle.view.fragment;
 
 import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import today.created.blendle.R;
 import today.created.blendle.hal.HalContent;
 import today.created.blendle.hal.HalItemPopular;
+import today.created.blendle.view.customview.BodyPartTextView;
 
 /**
  * Created by jolandaverhoef on 22/05/15.
@@ -33,11 +31,8 @@ public class ItemFragment extends Fragment {
         ViewGroup tvContainer = (ViewGroup) v.findViewById(R.id.container);
         if(item != null) {
             for (HalContent bodyPart : item.getManifest().body()) {
-                TextView textView = new TextView(container.getContext());
-                textView.setText(Html.fromHtml(bodyPart.content));
-                Typeface font = Typeface.createFromAsset(container.getContext().getAssets(),
-                        "Lato-Regular.ttf");
-                textView.setTypeface(font);
+                BodyPartTextView textView = new BodyPartTextView(container.getContext());
+                textView.setBodyPart(bodyPart);
                 tvContainer.addView(textView);
             }
         }

@@ -7,19 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import today.created.blendle.R;
 import today.created.blendle.asynctask.LoadPopularItemTask;
 import today.created.blendle.broadcastreceiver.DreamAlarmReceiver;
 import today.created.blendle.hal.HalItemPopular;
+import today.created.blendle.view.customview.BodyPartTextView;
 
 /**
  * Created by jolandaverhoef on 23/05/15.
@@ -78,10 +77,8 @@ public class MyDream extends DreamService {
 
     public void updateUI(HalItemPopular item, Bitmap mImage) {
         Log.v(TAG, "Update UI");
-        TextView textView = (TextView) findViewById(R.id.title);
-        textView.setText(item.getManifest().body().get(0).content);
-        Typeface font = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
-        textView.setTypeface(font);
+        BodyPartTextView textView = (BodyPartTextView) findViewById(R.id.title);
+        textView.setBodyPart(item.getManifest().getTitle());
         ImageView imgView = (ImageView) findViewById(R.id.featured_image);
         imgView.setImageBitmap(mImage);
     }

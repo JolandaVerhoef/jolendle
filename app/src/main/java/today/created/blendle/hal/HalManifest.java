@@ -30,4 +30,11 @@ public class HalManifest {
         }
         return null;
     }
+
+    public HalContent getTitle() {
+        for (HalContent bodyPart : body()) {
+            if("hl1".equals(bodyPart.type)) return bodyPart;
+        }
+        return body.size() > 0 ? body().get(0) : null;
+    }
 }
