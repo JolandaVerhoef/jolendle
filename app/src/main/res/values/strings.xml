@@ -4,4 +4,5 @@
     <string name="night_mode">Night mode</string>
     <string name="dim_display">Very dim display (for dark rooms)</string>
     <string name="preferences">Preferences</string>
+    <string name="dummy">dummy</string>
 </resources>

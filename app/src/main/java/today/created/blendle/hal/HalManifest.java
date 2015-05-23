@@ -16,8 +16,18 @@ public class HalManifest {
     private
     List<HalContent> body;
 
+    @JsonProperty("images")
+    private List<HalImage> images;
+
     public List<HalContent> body() {
         return body;
     }
+    private List<HalImage> images() { return images; }
 
+    public HalImage getFeaturedImage() {
+        for (HalImage image : images()) {
+            if(image.featured) return image;
+        }
+        return null;
+    }
 }

@@ -8,6 +8,8 @@ import today.created.blendle.R;
 
 /**
  * Created by jolandaverhoef on 18/04/15.
+ * Page that shows the preferences for the Android Daydream screen.
+ * Called from Settings app.
  */
 public class MyDreamSettingsActivity extends Activity {
     @Override
