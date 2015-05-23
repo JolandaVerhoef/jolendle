@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
 import android.util.Log;
@@ -53,13 +54,13 @@ public class MyDream extends DreamService {
         loadPopularItemTask = new LoadPopularItemTask(this);
         loadPopularItemTask.execute();
         int alarmType = AlarmManager.ELAPSED_REALTIME_WAKEUP;
-        long interval = 60*1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        long start = System.currentTimeMillis() + interval;
+        long interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        long start = SystemClock.elapsedRealtime() + interval;
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, DreamAlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         Log.v(TAG, "planning alarm");
-        alarmManager.setInexactRepeating(alarmType, 0, interval, alarmIntent);
+        alarmManager.setInexactRepeating(alarmType, start, interval, alarmIntent);
     }
 
     @Override
