@@ -1,6 +1,7 @@
 package today.created.blendle.view;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -34,6 +35,9 @@ public class ItemFragment extends Fragment {
             for (HalContent bodyPart : item.getManifest().body()) {
                 TextView textView = new TextView(container.getContext());
                 textView.setText(Html.fromHtml(bodyPart.content));
+                Typeface font = Typeface.createFromAsset(container.getContext().getAssets(),
+                        "Lato-Regular.ttf");
+                textView.setTypeface(font);
                 tvContainer.addView(textView);
             }
         }

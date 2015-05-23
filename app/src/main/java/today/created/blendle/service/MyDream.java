@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -79,6 +80,8 @@ public class MyDream extends DreamService {
         Log.v(TAG, "Update UI");
         TextView textView = (TextView) findViewById(R.id.title);
         textView.setText(item.getManifest().body().get(0).content);
+        Typeface font = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
+        textView.setTypeface(font);
         ImageView imgView = (ImageView) findViewById(R.id.featured_image);
         imgView.setImageBitmap(mImage);
     }
