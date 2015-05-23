@@ -3,6 +3,7 @@
     package="today.created.blendle" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,6 +35,11 @@
                 android:name="android.service.dream"
                 android:resource="@xml/my_dream" />
         </service>
+        <receiver android:name=".broadcastreceiver.DreamAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

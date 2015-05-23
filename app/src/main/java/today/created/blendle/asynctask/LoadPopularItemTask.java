@@ -18,18 +18,15 @@ import today.created.blendle.service.MyDream;
  * Load the most popular item and show on screen.
  */
 public class LoadPopularItemTask extends AsyncTask<Void, Void, HalItemPopular> {
+    private static final String TAG = "LoadPopularItemTask";
     private final MyDream myDream;
     private Bitmap mImage;
 
     public LoadPopularItemTask(MyDream myDream) {
         this.myDream = myDream;
     }
-
-    protected void onPreExecute() {
-
-    }
-
     protected HalItemPopular doInBackground(Void... voids) {
+        Log.v(TAG, "doInBackground");
         try {
             // retrieve the item
             final Webservice webservice = new Webservice();
@@ -53,6 +50,7 @@ public class LoadPopularItemTask extends AsyncTask<Void, Void, HalItemPopular> {
     }
 
     protected void onPostExecute(HalItemPopular popularItem) {
+        Log.v(TAG, "onPostExecute: " + popularItem);
         if (popularItem != null) {
             myDream.updateUI(popularItem, mImage);
         }
