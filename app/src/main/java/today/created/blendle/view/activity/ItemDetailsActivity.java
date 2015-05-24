@@ -7,6 +7,7 @@ import today.created.blendle.R;
 
 /**
  * Created by jolandaverhoef on 24/05/15.
+ * Dummy activity for showing item details.
  */
 public class ItemDetailsActivity extends Activity {
     @Override

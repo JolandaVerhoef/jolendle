@@ -13,11 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import java.io.IOException;
@@ -28,19 +25,12 @@ import today.created.blendle.adapter.ItemPagerAdapter;
 import today.created.blendle.hal.HalItemsPopular;
 import today.created.blendle.hal.Link;
 
-
+/**
+ * Central activity that shows the list of popular items.
+ */
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private Link nextPage;
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-     */
     private ItemPagerAdapter mItemPagerAdapter;
 
     @Override
@@ -48,14 +38,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mItemPagerAdapter = new ItemPagerAdapter(getFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        /*
-      The {@link ViewPager} that will host the section contents.
-     */
         ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -65,7 +48,7 @@ public class MainActivity extends Activity {
             @Override
             public void onPageSelected(int position) {
                 if (position == mItemPagerAdapter.getCount() - 1 && mItemPagerAdapter.isNotLoadingData()) {
-                    new TestTask().execute();
+                    new LoadPopularItemsTask().execute();
                 }
             }
 
@@ -77,24 +60,21 @@ public class MainActivity extends Activity {
         mViewPager.setPageTransformer(true, new MyPageTransformer());
 
         if(daydreamDisabled()) showDaydreamDialog();
-        new TestTask().execute();
+        new LoadPopularItemsTask().execute();
     }
 
+    // Ask the user to enable daydreaming for this app
     private void showDaydreamDialog() {
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
-        // dialog, so make our own transaction and take care of that here.
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-
-        // Create and show the dialog.
         new DaydreamDialogFragment().show(ft, "dialog");
     }
 
+    // Did the user already enable daydreaming for this app?
     private boolean daydreamDisabled() {
         Boolean daydreamEnabled = Settings.Secure.getInt(getContentResolver(),
                 "screensaver_enabled", 0) == 1;
@@ -105,7 +85,7 @@ public class MainActivity extends Activity {
         return componentString == null || !componentString.contains(getApplicationContext().getPackageName());
     }
 
-    private class TestTask extends AsyncTask<Void, Void, HalItemsPopular> {
+    private class LoadPopularItemsTask extends AsyncTask<Void, Void, HalItemsPopular> {
         protected void onPreExecute() {
             mItemPagerAdapter.setLoadingData(true);
         }
@@ -130,29 +110,6 @@ public class MainActivity extends Activity {
             }
             mItemPagerAdapter.setLoadingData(false);
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public static class DaydreamDialogFragment extends DialogFragment {
@@ -185,6 +142,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Handles animation when scrolling between viewpager pages.
     private class MyPageTransformer implements ViewPager.PageTransformer {
         @Override
         public void transformPage(View view, float position) {

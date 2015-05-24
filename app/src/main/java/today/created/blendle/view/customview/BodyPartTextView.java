@@ -54,6 +54,8 @@ public class BodyPartTextView extends TextView {
      * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
      * @param context Context to get resources and device specific display metrics
      * @return A float value to represent px equivalent to dp depending on device density
+     *
+     * This actually belongs in a util class, but for brevity it is now included here.
      */
     private float convertDpToPixel(float dp, Context context){
         Resources resources = context.getResources();
