@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.io.IOException;
 
@@ -74,6 +75,7 @@ public class MainActivity extends Activity {
             }
         });
         mViewPager.setAdapter(mItemPagerAdapter);
+        mViewPager.setPageTransformer(true, new MyPageTransformer());
 
         if(daydreamDisabled()) showDaydreamDialog();
         new TestTask().execute();
@@ -182,5 +184,28 @@ public class MainActivity extends Activity {
             // Create the AlertDialog object and return it
             return builder.create();
         }
+    }
+
+    private class MyPageTransformer implements ViewPager.PageTransformer {
+        @Override
+        public void transformPage(View view, float position) {
+            int pageHeight = view.getHeight();
+
+            if (position < -1) { // [-Infinity,-1)
+                // This page is way off-screen to the left.
+                view.setAlpha(0);
+            } else if (position <= 1) { // [-1,1]
+                View mTitle = view.findViewById(R.id.title);
+                if(mTitle != null) {
+                    float titleHeight = mTitle.getHeight();
+                    mTitle.setTranslationY(Math.abs(position) * titleHeight);
+                    mTitle.setAlpha(1-Math.abs(position));
+                }
+            } else { // (1,+Infinity]
+                // This page is way off-screen to the right.
+                view.setAlpha(0);
+            }
+        }
+
     }
 }
