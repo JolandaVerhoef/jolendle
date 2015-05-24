@@ -38,7 +38,14 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"/>
+            android:paddingBottom="@dimen/activity_vertical_margin">
+            <Button
+                android:id="@+id/read_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/read_more"
+                android:background="?android:attr/selectableItemBackground"/>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package today.created.blendle.view.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import today.created.blendle.hal.HalContent;
 import today.created.blendle.hal.HalImage;
 import today.created.blendle.hal.HalItemPopular;
 import today.created.blendle.hal.Link;
+import today.created.blendle.view.activity.ItemDetailsActivity;
 import today.created.blendle.view.customview.BodyPartTextView;
 
 /**
@@ -43,7 +45,7 @@ public class ItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        final View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         ViewGroup tvContainer = (ViewGroup) v.findViewById(R.id.container);
         mItemHeader = (ViewGroup) v.findViewById(R.id.item_header);
@@ -62,10 +64,16 @@ public class ItemFragment extends Fragment {
                 } else {
                     BodyPartTextView textView = new BodyPartTextView(container.getContext());
                     textView.setBodyPart(bodyPart);
-                    tvContainer.addView(textView);
+                    tvContainer.addView(textView, tvContainer.getChildCount() - 1);
                 }
             }
         }
+        v.findViewById(R.id.read_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(v.getContext(), ItemDetailsActivity.class));
+            }
+        });
         return v;
     }
 

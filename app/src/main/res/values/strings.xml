@@ -9,4 +9,7 @@
     <string name="dialog_daydream_enable">Enable</string>
     <string name="cancel">Cancel</string>
     <string name="dialog_daydream_title">Enable daydream?</string>
+    <string name="read_more">Read more…</string>
+    <string name="item_details_placeholder">This will contain the item details</string>
+    <string name="item_details_activity_label">Details</string>
 </resources>
