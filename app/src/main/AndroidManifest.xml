@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/blendle"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -25,7 +25,7 @@
         <service
             android:name=".service.MyDream"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/blendle"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_DREAM_SERVICE"
             android:configChanges="orientation"
