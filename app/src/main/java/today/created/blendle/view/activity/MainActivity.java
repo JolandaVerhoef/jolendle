@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
             @Override
             public void onPageSelected(int position) {
                 if (position == mItemPagerAdapter.getCount() - 1 && mItemPagerAdapter.isNotLoadingData()) {
-                    mItemPagerAdapter.setLoadingData(true);
                     new TestTask().execute();
                 }
             }
@@ -189,21 +188,13 @@ public class MainActivity extends Activity {
     private class MyPageTransformer implements ViewPager.PageTransformer {
         @Override
         public void transformPage(View view, float position) {
-            int pageHeight = view.getHeight();
-
-            if (position < -1) { // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                view.setAlpha(0);
-            } else if (position <= 1) { // [-1,1]
+            if (position <= 1) { // [-1,1]
                 View mTitle = view.findViewById(R.id.title);
                 if(mTitle != null) {
                     float titleHeight = mTitle.getHeight();
                     mTitle.setTranslationY(Math.abs(position) * titleHeight);
                     mTitle.setAlpha(1-Math.abs(position));
                 }
-            } else { // (1,+Infinity]
-                // This page is way off-screen to the right.
-                view.setAlpha(0);
             }
         }
 
