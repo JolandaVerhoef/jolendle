@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.ImageView;
 
 import java.io.InputStream;
 
@@ -21,7 +22,6 @@ import today.created.blendle.hal.HalImage;
 import today.created.blendle.hal.HalItemPopular;
 import today.created.blendle.hal.Link;
 import today.created.blendle.view.customview.BodyPartTextView;
-import today.created.blendle.view.customview.FullscreenImageView;
 
 /**
  * Created by jolandaverhoef on 22/05/15.
@@ -30,8 +30,9 @@ import today.created.blendle.view.customview.FullscreenImageView;
 public class ItemFragment extends Fragment {
     private HalItemPopular item;
 
-    private FullscreenImageView mImageView;
+    private ImageView mImageView;
     private int screenHeight;
+    private ViewGroup mItemHeader;
 
     public static ItemFragment newInstance(HalItemPopular item) {
         ItemFragment fragment = new ItemFragment();
@@ -45,7 +46,8 @@ public class ItemFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         ViewGroup tvContainer = (ViewGroup) v.findViewById(R.id.container);
-        mImageView = (FullscreenImageView) v.findViewById(R.id.image);
+        mItemHeader = (ViewGroup) v.findViewById(R.id.item_header);
+        mImageView = (ImageView) v.findViewById(R.id.image);
         if(item != null) {
             new loadImageTask().execute();
             for (HalContent bodyPart : item.getManifest().body()) {
@@ -58,26 +60,24 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        final ViewTreeObserver viewTreeObserver = getView().getViewTreeObserver();
-        if(viewTreeObserver != null) {
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    //do something like measure a view etc
-                    View content = getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT);
-                    Log.d("DISPLAY", content.getWidth() + " x " + content.getHeight());
-                    screenHeight = content.getHeight();
-                    mImageView.setScreenHeight(screenHeight);
-
-                    //we only wanted the first call back so now remove
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-                        getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    else
-                        getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
-        }
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //do something like measure a view etc
+                View content = getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT);
+                Log.d("DISPLAY", content.getWidth() + " x " + content.getHeight());
+                screenHeight = content.getHeight();
+                ViewGroup.LayoutParams layoutParams = mItemHeader.getLayoutParams();
+                layoutParams.height = screenHeight;
+                mItemHeader.setLayoutParams(layoutParams);
+                //we only wanted the first call back so now remove
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                else
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     private void setItem(HalItemPopular item) {
