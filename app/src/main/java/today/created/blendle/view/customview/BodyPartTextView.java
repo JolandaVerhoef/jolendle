@@ -36,7 +36,7 @@ public class BodyPartTextView extends TextView {
         int fontSize;
         if("hl1".equals(type)) {
             font = "Lato-Bold.ttf";
-            fontSize = 24;
+            fontSize = 36;
         } else if("intro".equals(type)) {
             font = "Lato-Italic.ttf";
             fontSize = 18;

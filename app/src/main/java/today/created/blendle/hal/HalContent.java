@@ -14,4 +14,8 @@ public class HalContent {
 
     @JsonProperty("content")
     public String content;
+
+    public boolean isTitle() {
+        return "hl1".equals(type);
+    }
 }

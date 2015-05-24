@@ -48,12 +48,22 @@ public class ItemFragment extends Fragment {
         ViewGroup tvContainer = (ViewGroup) v.findViewById(R.id.container);
         mItemHeader = (ViewGroup) v.findViewById(R.id.item_header);
         mImageView = (ImageView) v.findViewById(R.id.image);
+        BodyPartTextView mTitleView = (BodyPartTextView) v.findViewById(R.id.title);
         if(item != null) {
-            new loadImageTask().execute();
+            boolean hasFeaturedImage = item.getManifest().getFeaturedImage() != null;
+            if(hasFeaturedImage) {
+                new loadImageTask().execute();
+            } else {
+                mItemHeader.setVisibility(View.GONE);
+            }
             for (HalContent bodyPart : item.getManifest().body()) {
-                BodyPartTextView textView = new BodyPartTextView(container.getContext());
-                textView.setBodyPart(bodyPart);
-                tvContainer.addView(textView);
+                if(bodyPart.isTitle() && hasFeaturedImage) {
+                    mTitleView.setBodyPart(bodyPart);
+                } else {
+                    BodyPartTextView textView = new BodyPartTextView(container.getContext());
+                    textView.setBodyPart(bodyPart);
+                    tvContainer.addView(textView);
+                }
             }
         }
         return v;
@@ -73,6 +83,7 @@ public class ItemFragment extends Fragment {
                 mItemHeader.setLayoutParams(layoutParams);
                 //we only wanted the first call back so now remove
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                    //noinspection deprecation
                     view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 else
                     view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -103,11 +114,7 @@ public class ItemFragment extends Fragment {
         }
 
         public void onPostExecute(Bitmap image) {
-            if(image == null) {
-                mImageView.setVisibility(View.GONE);
-            } else {
-                mImageView.setImageBitmap(image);
-            }
+            mImageView.setImageBitmap(image);
         }
     }
 }
